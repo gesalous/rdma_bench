@@ -49,6 +49,20 @@ else()
   message(FATAL_ERROR "verbs.h library not found!")
 endif()
 
+# Look for the verbs.h library
+find_path(RDMA_CM_INCLUDE_DIR rdma_cma.h
+          PATHS /usr/include/infiniband /usr/local/include/infiniband
+                /usr/include/rdma /usr/local/include/rdma)
+# Check if the library was found
+if(RDMA_CM_INCLUDE_DIR)
+  message(STATUS "RDMA CM library found at '${RDMA_CM_INCLUDE_DIR}'")
+  # Include the directory containing verbs.h
+  include_directories(${RDMA_CM_INCLUDE_DIR})
+else()
+  # Handle the case when the library is not found
+  message(FATAL_ERROR "rdma_cma.h library not found!")
+endif()
+
 FetchContent_Declare(
   uthash
   GIT_REPOSITORY https://github.com/troydhanson/uthash
