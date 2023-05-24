@@ -35,7 +35,19 @@ message(STATUS "Release flags are '${CMAKE_C_FLAGS_RELEASE}'")
 message(STATUS "DEBUG flags are '${CMAKE_C_FLAGS_DEBUG}'")
 message(STATUSLIB_TEST_ "CMAKE install libdir is '${CMAKE_INSTALL_LIBDIR}'")
 
-# Enable testing enable_testing () include (CTest)
+# Look for the verbs.h library
+find_path(VERBS_INCLUDE_DIR infiniband/verbs.h
+          PATHS /usr/include/infiniband /usr/local/include/infiniband
+                /usr/include/rdma /usr/local/include/rdma)
+# Check if the library was found
+if(VERBS_INCLUDE_DIR)
+  message(STATUS "Verbs library found at '${VERBS_INCLUDE_DIR}'")
+  # Include the directory containing verbs.h
+  include_directories(${VERBS_INCLUDE_DIR})
+else()
+  # Handle the case when the library is not found
+  message(FATAL_ERROR "verbs.h library not found!")
+endif()
 
 FetchContent_Declare(
   uthash
@@ -75,4 +87,3 @@ if(NOT log_POPULATED)
   add_subdirectory(${log_SOURCE_DIR} ${log_BINARY_DIR})
   FetchContent_MakeAvailable(log)
 endif()
-
