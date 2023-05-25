@@ -1,9 +1,9 @@
 # Set the template VOL connector name
 set(EXE_NAME nida_server)
 
-add_executable(${EXE_NAME} nida_server.c tpoller_listen.c)
+add_executable(${EXE_NAME} nida_server.c tpoller.c)
 
-target_link_libraries(${EXE_NAME} log pthread)
+target_link_libraries(${EXE_NAME} log pthread ibverbs rdmacm numa)
 
 target_compile_options(
   ${EXE_NAME}

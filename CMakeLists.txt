@@ -63,6 +63,18 @@ else()
   message(FATAL_ERROR "rdma_cma.h library not found!")
 endif()
 
+# Look for the numa.h library
+find_path(NUMA_INCLUDE_DIR numa.h PATHS /usr/include /usr/local/include)
+# Check if the library was found
+if(NUMA_INCLUDE_DIR)
+  message(STATUS "NUMA library found at '${NUMA_INCLUDE_DIR}'")
+  # Include the directory containing verbs.h
+  include_directories(${NUMA_INCLUDE_DIR})
+else()
+  # Handle the case when the library is not found
+  message(FATAL_ERROR "numa.h library not found!")
+endif()
+
 FetchContent_Declare(
   uthash
   GIT_REPOSITORY https://github.com/troydhanson/uthash
